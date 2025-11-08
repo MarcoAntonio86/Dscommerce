@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devsuperior.dscommerce.entities.Order;
+import com.devsuperior.dscommerce.entities.OrderItem;
 import com.devsuperior.dscommerce.entities.OrderStatus;
+
 
 public class OrderDTO {
 
@@ -28,11 +30,15 @@ public class OrderDTO {
 	}
 	
 	public OrderDTO(Order entity) {
-		id = entity.getId();
-		moment = entity.getMoment();
-		status = entity.getStatus();
-		client = new ClienteDTO(entity.getClient());
-		payment = (entity.getPayment() == null) ? null : new PaymentDTO(entity.getPayment());
+		this.id = entity.getId();
+		this.moment = entity.getMoment();
+		this.status = entity.getStatus();
+		this.client = new ClienteDTO(entity.getClient());
+		this.payment = (entity.getPayment() == null) ? null : new PaymentDTO(entity.getPayment());
+		for(OrderItem item : entity.getItems()) {
+			OrderItemDTO itemDto = new OrderItemDTO(item);
+			items.add(itemDto);
+		}
 	}
 
 	public Long getId() {
@@ -49,6 +55,11 @@ public class OrderDTO {
 
 	public PaymentDTO getPayment() {
 		return payment;
+	}
+	
+	
+	public OrderStatus getStatus() {
+		return status;
 	}
 
 	public List<OrderItemDTO> getItems() {
